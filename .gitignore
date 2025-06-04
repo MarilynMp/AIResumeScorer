@@ -1,0 +1,8 @@
+__pycache__/
+openai-env/
+.env
+*.pyc
+*.pkl
+*.log
+*.db
+.vscode/

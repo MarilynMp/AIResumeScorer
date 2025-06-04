@@ -1,0 +1,27 @@
+Job Title: Python Backend Developer (Remote)
+
+We are seeking a skilled Python Backend Developer to join our growing engineering team. The ideal candidate will have experience building scalable web APIs, integrating with databases, and deploying applications in cloud environments.
+
+Responsibilities:
+
+Design and develop RESTful APIs using Python (preferably Flask or FastAPI).
+
+Collaborate with frontend developers and product managers.
+
+Maintain and optimize database queries.
+
+Write unit tests and ensure high code quality.
+
+Participate in code reviews and agile ceremonies.
+
+Requirements:
+
+2+ years of experience with Python web development.
+
+Strong understanding of Flask or similar frameworks.
+
+Familiarity with relational databases like PostgreSQL or MySQL.
+
+Experience with version control (Git) and containerization tools like Docker.
+
+Good communication and teamwork skills.
