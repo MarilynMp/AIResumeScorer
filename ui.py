@@ -19,6 +19,6 @@ if st.button("Score Resume"):
     })
 
     if response.status_code == 200:
-        st.success(response.json()["result"])
+        st.success(response.json())
     else:
-        st.error(response.json()["error"])
+        st.error("Error")

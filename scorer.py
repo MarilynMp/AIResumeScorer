@@ -1,10 +1,10 @@
 import os
-import openai
+import json
+from openai import OpenAI
 from dotenv import load_dotenv
 import PyPDF2
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as f:
@@ -15,23 +15,42 @@ def score_resume(resume_path, job_description):
     resume_text = extract_text_from_pdf(resume_path)
 
     prompt = f"""
-    You are an AI assistant that matches resumes to job descriptions.
-    Given the following resume and job description, provide a match score between 0 and 100 with a short reason.
+You are a job matching assistant. Evaluate the resume and job description below.
 
-    Resume:
-    {resume_text}
+1. Give a **score between 0 and 100**
+2. Give a **brief reason for the score**
+3. List **matching skills**
+4. List **missing skills** that the job description requires but are not in the resume.
 
-    Job Description:
-    {job_description}
+Use the following JSON format:
 
-    Respond in this format:
-    Score: <score>/100
-    Reason: <reason>
-    """
+{{
+  "score": <score>,
+  "reason": "<reason>",
+  "matching_skills": ["skill1", "skill2", ...],
+  "missing_skills": ["skillA", "skillB", ...]
+}}
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  # or "gpt-3.5-turbo"
+Resume:
+\"\"\"
+{resume_text}
+\"\"\"
+
+Job Description:
+\"\"\"
+{job_description}
+\"\"\"
+"""
+
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    response = client.chat.completions.create(
+        model="gpt-4",
         messages=[{"role": "user", "content": prompt}]
+        # response_format="json"
     )
 
-    return response['choices'][0]['message']['content']
+    return json.loads(response.choices[0].message.content)
+
+
+
