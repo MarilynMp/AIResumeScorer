@@ -38,14 +38,15 @@ class DBService:
             """)
             conn.commit()
 
-    def insert_fitness_result(self, resume_name: str, score_data: Dict):
+    def insert_fitness_result(self, resume_name: str, job_id : int,  score_data: Dict):
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO JobFitnessResult (Resume, MatchScore, MatchSkills, MissingSkills)
+                INSERT INTO JobFitnessResult (ResumeName, JobID, MatchScore, MatchSkills, MissingSkills)
                 VALUES (?, ?, ?, ?)
             """, (
                 resume_name,
+                job_id,
                 score_data['score'],
                 ', '.join(score_data['matching_skills']),
                 ', '.join(score_data['missing_skills'])
