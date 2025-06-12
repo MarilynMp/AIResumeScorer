@@ -2,19 +2,28 @@ from flask import Flask, request, jsonify
 from scorer import score_resume
 from db_service import DBService
 import os
+from flask_cors import CORS
+from jobs import jobs_bp
+from resumes import resumes_bp
 
 app = Flask(__name__)
+app.register_blueprint(jobs_bp)
+app.register_blueprint(resumes_bp)
 db = DBService()
+CORS(app)
 
-@app.route("/score", methods=["POST"])
+@app.route("/api/score", methods=["POST"])
 def score():
     data = request.json
-    resume_path = data.get("resume_path")
-    job_description = data.get("job_description")
+    resumeName = data.get("resumeName")
+    resume_path = f'./resumes/{resumeName}'
+    job_description = data.get("JD")
+    job_id = data.get("jobId")
 
     if not resume_path or not job_description:
         return jsonify({"error": "Missing resume_path or job_description"}), 400
 
+    
     if not os.path.exists(resume_path):
         return jsonify({"error": "Resume file not found"}), 404
 
@@ -22,7 +31,7 @@ def score():
     result = score_resume(resume_path, job_description)
 
     #Insert into job fitness score table
-    db.insert_fitness_result(os.path.basename(resume_path), result)
+    db.insert_fitness_result(os.path.basename(resume_path), job_id, result)
     
     return jsonify(result)
 

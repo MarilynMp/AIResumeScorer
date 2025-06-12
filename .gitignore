@@ -5,3 +5,4 @@ openai-env/
 *.pkl
 *.log
 .vscode/
+node_modules/

@@ -43,7 +43,7 @@ class DBService:
             cursor = conn.cursor()
             cursor.execute("""
                 INSERT INTO JobFitnessResult (ResumeName, JobID, MatchScore, MatchSkills, MissingSkills)
-                VALUES (?, ?, ?, ?)
+                VALUES (?, ?, ?, ?,?)
             """, (
                 resume_name,
                 job_id,
@@ -60,3 +60,20 @@ class DBService:
             rows = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]
             return [dict(zip(columns, row)) for row in rows]
+        
+    def get_all_jobs(self) -> List[Dict]:
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT JobID, JobPosition, JD FROM Jobs")
+            rows = cursor.fetchall()
+            return rows
+        
+    def get_resume_by_job_id(self,job_id):
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT ResumeJobMappingID, ResumeName, JobID FROM ResumeJobMapping WHERE JobID = ?",
+        (job_id,)
+    )
+        resumes = cursor.fetchall()
+        conn.close()
+        return resumes
