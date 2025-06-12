@@ -15,6 +15,7 @@ class DBService:
             cursor.executescript("""
                 CREATE TABLE IF NOT EXISTS Jobs (
                     JobID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    JobPosition TEXT,
                     JD TEXT
                 );
 
@@ -27,11 +28,12 @@ class DBService:
 
                 CREATE TABLE IF NOT EXISTS JobFitnessResult (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,     
-                    ResumeJobMappingID TEXT,
+                    ResumeName TEXT,
+                    JobID INTEGER,
                     MatchScore INTEGER,
                     MatchSkills TEXT,
                     MissingSkills TEXT,
-                    FOREIGN KEY(ResumeJobMappingID) REFERENCES ResumeJobMapping(ResumeJobMappingID)
+                    FOREIGN KEY(JobID) REFERENCES Jobs(JobID)
                 );
             """)
             conn.commit()
