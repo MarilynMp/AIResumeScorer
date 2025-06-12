@@ -4,5 +4,4 @@ openai-env/
 *.pyc
 *.pkl
 *.log
-*.db
 .vscode/
