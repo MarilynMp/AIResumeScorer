@@ -5,10 +5,12 @@ import os
 from flask_cors import CORS
 from jobs import jobs_bp
 from resumes import resumes_bp
+from leaderboard import leaderboard_bp
 
 app = Flask(__name__)
 app.register_blueprint(jobs_bp)
 app.register_blueprint(resumes_bp)
+app.register_blueprint(leaderboard_bp)
 db = DBService()
 CORS(app)
 
@@ -36,4 +38,4 @@ def score():
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

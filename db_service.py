@@ -77,3 +77,30 @@ class DBService:
         resumes = cursor.fetchall()
         conn.close()
         return resumes
+    
+
+    def get_top_fitness_results(self, jobID: int, limit: int = 3) -> List[Dict]:
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT jfr.ID, jfr.ResumeName, jfr.MatchScore, jfr.MatchSkills, jfr.MissingSkills, jfr.JobID
+                    FROM JobFitnessResult jfr
+                    WHERE jfr.JobID = ?
+                    ORDER BY jfr.MatchScore DESC
+                    LIMIT ?
+                """, (jobID, limit))
+
+                rows = cursor.fetchall()
+
+                if not rows:
+                    return []  # No results found
+
+                columns = [desc[0] for desc in cursor.description]
+                return [dict(zip(columns, row)) for row in rows]
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return []
+        except Exception as e:
+            print(f"Error: {e}")
+            return []
