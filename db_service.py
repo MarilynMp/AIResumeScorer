@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 DB_FILE = "job_matcher.db"
 
@@ -104,3 +104,18 @@ class DBService:
         except Exception as e:
             print(f"Error: {e}")
             return []
+        
+
+    def get_job_fitness_by_job_and_resume(self, job_id: int, resume_name: str) -> Optional[Dict]:
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT * FROM JobFitnessResult WHERE JobID = ? AND ResumeName = ?",
+                (job_id, resume_name)
+            )
+            row = cursor.fetchone()
+            if row:
+                columns = [desc[0] for desc in cursor.description]
+                return dict(zip(columns, row))
+            else:
+                return None

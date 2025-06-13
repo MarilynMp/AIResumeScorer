@@ -6,11 +6,13 @@ from flask_cors import CORS
 from jobs import jobs_bp
 from resumes import resumes_bp
 from leaderboard import leaderboard_bp
+from compare import compare_bp
 
 app = Flask(__name__)
 app.register_blueprint(jobs_bp)
 app.register_blueprint(resumes_bp)
 app.register_blueprint(leaderboard_bp)
+app.register_blueprint(compare_bp)
 db = DBService()
 CORS(app)
 

@@ -4,8 +4,8 @@ from db_service import DBService
 leaderboard_bp = Blueprint('leaderboard', __name__)
 db = DBService()
 
-@leaderboard_bp.route('/api/jobFitnessResults', methods=['GET'])
-def jobFitnessResults():
+@leaderboard_bp.route('/api/jobTopFitnessResults', methods=['GET'])
+def jobTopFitnessResults():
     try:
         # Get jobID from the query parameters
         jobID = request.args.get("jobID")
